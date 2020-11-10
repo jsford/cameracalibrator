@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Camera Calibration</title>
+
+  <link rel="stylesheet" href="./bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+      <h2>Camera Calibration Toolbox</h2>
+      <p id="status">OpenCV.js is loading...</p>
+
+      <div style="width: 40%;">
+        <label for="exampleSelect1">Camera Model</label>
+        <select class="form-control" id="exampleSelect1">
+          <option>Pinhole</option>
+          <option>Fisheye</option>
+        </select>
+
+        <label for="checkerboard-rows-input" class="form-label">Checkerboard Rows</label>
+        <input class="form-control" type="number" value="8" id="checkerboard-rows-input">
+
+        <label for="checkerboard-cols-input" class="form-label">Checkerboard Columns</label>
+        <input class="form-control" type="number" value="7" id="checkerboard-cols-input">
+
+        <div class="inputoutput">
+            <img id="imageSrc" alt="No Image" hidden="true">
+            <br />
+            <label class="btn btn-primary">
+                Upload Images <input type="file" id="fileInput" name="file" multiple hidden />
+            </label>
+        </div>
+
+        <div class="inputoutput">
+          <canvas id="canvasOutput"></canvas>
+        </div>
+
+      </div>
+    </div>
+
+  <script type="text/javascript">
+
+      let imgElement = document.getElementById('imageSrc');
+      let inputElement = document.getElementById('fileInput');
+
+      inputElement.addEventListener('change', (e) => {
+          imgElement.src = URL.createObjectURL(e.target.files[0]);
+          imgElement.hidden = false;
+      }, false);
+
+      imgElement.onload = function() {
+          let mat = cv.imread(imgElement);
+          let mat2 = new cv.Mat();
+          cv.cvtColor(mat, mat2, cv.COLOR_RGB2GRAY);
+          let dim = new cv.Size(100,100);
+          let mat3 = new cv.Mat();
+          cv.resize(mat2, mat3, dim, 0, 0, cv.INTER_AREA);
+          cv.imshow('canvasOutput', mat3);
+          mat.delete();
+          mat2.delete();
+          mat3.delete();
+      };
+
+      function onOpenCvReady() {
+          document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
+      }
+  </script> 
+
+  <script async src="opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+</body>
+</html>
