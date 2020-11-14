@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+  <div class="text-center my-5">
+      <h1>Calibration Target Generator</h1>
+  </div>
+
+  <div class = "panel panel-rounded pl-4 pt-4 pr-4 pb-2 my-5 bg-light">
+       <div class = "panel-heading">
+          <h3 class = "panel-title pb-4">Configure Target</h3>
+       </div>
+   
+       <div class = "panel-body">
+           <div class="form-group mx-3">
+               <div class="form-group row">
+                   <!-- Pattern Type -->
+                   <div class="form-group col-md col-lg-2">
+                       <label for="calibrationPatternType">Pattern Type</label>
+                       <select class="form-control" id="calibrationTargetType">
+                           <option>Checkerboard</option>
+                           <option>Circles Grid</option>
+                           <option>Asymetric Circles Grid</option>
+                       </select>
+                   </div>
+                   <!-- Pattern Rows -->
+                   <div class="form-group col-md col-lg-2">
+                       <label for="calibrationPatternRows">Rows</label>
+                       <input class="form-control integer-input clamp-2-100" type="number" value="7" id="calibrationTargetRows">
+                   </div>
+                   <!-- Pattern Columns -->
+                   <div class="form-group col-md col-lg-2">
+                       <label for="calibrationPatternCols">Columns</label>
+                       <input class="form-control integer-input clamp-2-100" type="number" value="8" id="calibrationTargetCols">
+                   </div>
+                   <!-- Pattern Pitch -->
+                   <div class="form-group col-md col-lg-2">
+                       <label for="calibrationPatternPitch">Pitch [mm]</label>
+                       <input class="form-control abs-val at-least-1" type="number" value="40" id="calibrationTargetPitch">
+                   </div>
+
+                   <!-- Download Target -->
+                   <div class="form-group col-md col-lg-*">
+                       <label for="downloadTargetButton">&nbsp;</label>
+                       <button type="button" id="downloadTargetButton" class="btn btn-primary btn-block">Download PDF</button>
+                   </div>
+               </div>
+           </div>
+       </div>
+  </div> <!-- Configure Target Panel -->
+
+  <h5>Pattern Type</h5>
+  <div class="table-fluid">
+      <div class="row">
+          <div class="col"><img src="{{ url_for('static', filename='images/lena.jpg') }}"></div>
+          <div class="col"><img src="{{ url_for('static', filename='images/lena.jpg') }}"></div>
+          <div class="col"><img src="{{ url_for('static', filename='images/lena.jpg') }}"></div>
+      </div>
+  </div>
+  <p class="lead">
+       Lorem ipsum had a little lamb, little lamb, little lamb.
+  </p>
+  <h5>Rows</h5>
+  <p class="lead">
+       Lorem ipsum had a little lamb, little lamb, little lamb.
+  </p>
+  <h5>Columns</h5>
+  <p class="lead">
+       Lorem ipsum had a little lamb, little lamb, little lamb.
+  </p>
+  <h5>Pitch [mm]</h5>
+  <p class="lead">
+       Lorem ipsum had a little lamb, little lamb, little lamb.
+  </p>
+
+{% endblock %}

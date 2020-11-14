@@ -1,0 +1,5 @@
+@import './bootstrap.min.css';
+
+.panel-rounded {
+    border-radius: 8px;
+}

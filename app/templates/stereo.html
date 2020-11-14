@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+  <div class="text-center">
+      <h1>Stereo Camera Calibrator</h1>
+  </div>
+
+  <p id="status">OpenCV.js is loading...</p>
+  <hr class="border border-primary" />
+
+  <div class="form-group mt-3">
+      <div class="form-group row">
+          <!-- Upload Images -->
+          <div class="form-group col">
+              <!-- Upload Images for Calibration -->
+              <label for="uploadImages">Upload Images</label>
+              <label class="btn btn-primary">
+                  Upload Images <input type="file" hidden multiple class="form-control-file" id="uploadImages" aria-describedby="fileHelp">
+              </label>
+          </div>
+          <!-- Pattern Type -->
+          <div class="form-group col">
+              <label for="calibrationPatternType">Pattern Type</label>
+              <select class="form-control" id="calibrationPatternType">
+                  <option>Checkerboard</option>
+                  <option>Circles Grid</option>
+                  <option>Asymetric Circles Grid</option>
+              </select>
+          </div>
+          <!-- Pattern Rows -->
+          <div class="form-group col">
+              <label for="calibrationPatternRows">Rows</label>
+              <input class="form-control" type="number" value="7" id="example-number-input">
+          </div>
+          <!-- Pattern Cols -->
+          <div class="form-group col">
+              <label for="calibrationPatternCols">Cols</label>
+              <input class="form-control" type="number" value="8" id="example-number-input">
+          </div>
+          <!-- Pattern Pitch -->
+          <div class="form-group col">
+              <label for="calibrationPatternPitch">Pattern Pitch [mm]</label>
+              <input class="form-control" type="number" value="40" id="example-number-input">
+          </div>
+
+          <!-- Perform Calibration -->
+          <div class="form-group col">
+              <label for="calibrationPatternDownload">Calibrate Camera</label>
+              <button type="button" class="btn btn-primary">Calibrate Camera</button>
+          </div>
+      </div>
+  </div>
+
+  <hr class="border border-primary" />
+{% endblock %}
