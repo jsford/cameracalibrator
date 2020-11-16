@@ -5,7 +5,7 @@
       <h1>Calibration Pattern Generator</h1>
   </div>
 
-  <div class = "panel panel-rounded pl-3 pt-3 pr-3 mt-4 bg-light">
+  <div class = "panel panel-rounded pl-3 pt-3 pr-3 pb-2 mt-4 bg-light">
        <div class = "panel-heading">&nbsp;</div>
 
        <div class = "panel-body">
@@ -45,6 +45,11 @@
                        <div class="form-group row-md">
                            <label for="calibrationTargetBoardHeight">Board Height [mm]</label>
                            <input class="form-control abs-val" type="number" value="200" id="calibrationTargetBoardHeight">
+                       </div>
+                       <!-- Dot Radius -->
+                       <div class="form-group row-md">
+                           <label id="calibrationTargetDotRadiusLabel" for="calibrationTargetDotRadius" class="d-none">Dot Radius [mm]</label>
+                           <input class="form-control abs-val d-none" type="number" value="5" id="calibrationTargetDotRadius">
                        </div>
 
                        <!-- Download Target -->
