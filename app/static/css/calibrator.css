@@ -1,5 +1,14 @@
 @import './bootstrap.min.css';
 
+.page-content {
+    padding-top: 100px;
+}
+
 .panel-rounded {
     border-radius: 8px;
+}
+
+/* Hide vertical scrollbar */
+::-webkit-scrollbar {
+display: none;
 }

@@ -11,9 +11,9 @@ def index():
 def stereo():
     return render_template('stereo.html')
 
-@app.route('/targets')
-def targets():
-    return render_template('targets.html')
+@app.route('/patterns')
+def patterns():
+    return render_template('patterns.html', title='Pattern Generator')
 
 @app.route('/about')
 def about():
@@ -22,9 +22,3 @@ def about():
 @app.route('/favicon')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static', 'images'), 'favicon.ico')
-
-@app.route('/generateCalibrationTarget', methods=['POST'])
-def generate_calibration_target():
-    print(request.get_json())
-    return "It works!\n"
-
