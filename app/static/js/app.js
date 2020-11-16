@@ -33,14 +33,27 @@ $(".abs-val").on('change', function() {
 // Pattern Generator.
 // ---------------------------------------------------------------
 
-let dlTgtBtn = document.getElementById("downloadTargetButton");
 let tgtType  = document.getElementById("calibrationTargetType");
 let tgtRows  = document.getElementById("calibrationTargetRows");
 let tgtCols  = document.getElementById("calibrationTargetCols");
 let tgtPitch = document.getElementById("calibrationTargetPitch");
 let tgtBoardWidth  = document.getElementById("calibrationTargetBoardWidth");
 let tgtBoardHeight = document.getElementById("calibrationTargetBoardHeight");
+let tgtDotRadius = document.getElementById("calibrationTargetDotRadius");
+let tgtDotRadiusLabel = document.getElementById("calibrationTargetDotRadiusLabel");
 let calibrationPatternPreview = document.getElementById("calibrationPatternPreview");
+let dlTgtBtn = document.getElementById("downloadTargetButton");
+
+// Hide dot radius input for checkerboard patterns.
+tgtType.addEventListener("change", function() {
+    if( tgtType.value == "Checkerboard" ) {
+        tgtDotRadius.classList.add('d-none');
+        tgtDotRadiusLabel.classList.add('d-none');
+    } else {
+        tgtDotRadius.classList.remove('d-none');
+        tgtDotRadiusLabel.classList.remove('d-none');
+    }
+});
 
 tgtType.addEventListener("change", updatePattern);
 tgtRows.addEventListener("change", updatePattern);
@@ -48,6 +61,7 @@ tgtCols.addEventListener("change", updatePattern);
 tgtPitch.addEventListener("change", updatePattern);
 tgtBoardWidth.addEventListener("change", updatePattern);
 tgtBoardHeight.addEventListener("change", updatePattern);
+tgtDotRadius.addEventListener("change", updatePattern);
 dlTgtBtn.addEventListener("click", savePattern);
 
 // Construct a pattern for the preview on page load.
@@ -60,8 +74,9 @@ function updatePattern() {
     let pitch = tgtPitch.value;
     let bw = tgtBoardWidth.value;
     let bh = tgtBoardHeight.value;
+    let dr = tgtDotRadius.value;
 
-    let svg = generatePattern(type, r, c, pitch, bw, bh);
+    let svg = generatePattern(type, r, c, pitch, bw, bh, dr);
     calibrationPatternPreview.innerHTML = svg.svg();
 }
 
@@ -72,9 +87,9 @@ function savePattern() {
     let pitch = tgtPitch.value;
     let bw = tgtBoardWidth.value;
     let bh = tgtBoardHeight.value;
+    let dr = tgtDotRadius.value;
 
-    let svg = generatePattern(type, r, c, pitch, bw, bh);
-    //svg.each(function(i) { i.to('mm'); });
+    let svg = generatePattern(type, r, c, pitch, bw, bh, dr);
     let blob = new Blob([svg.svg()], {type: "text/plain",endings:"native"});
     window.saveAs(blob, "calibration_target.svg");
 }
@@ -86,7 +101,7 @@ function pct(x) {
     return `${x}%`;
 }
 
-function generatePattern(type, r, c, pitch, bw, bh) {
+function generatePattern(type, r, c, pitch, bw, bh, dr) {
     calibrationPatternPreview.innerHTML = "";
     let draw = SVG('calibrationPatternPreview').size(pct(100), pct(100));
     draw.viewbox(0, 0, bw, bh);
@@ -94,7 +109,7 @@ function generatePattern(type, r, c, pitch, bw, bh) {
     // Fill background with white.
     draw.rect(bw, bh).attr({ fill: '#fff' });
 
-    let radius = 0;
+    let radius = Number(dr);
     let mx = 0;
     let my = 0;
     let msg = '';
@@ -114,8 +129,6 @@ function generatePattern(type, r, c, pitch, bw, bh) {
         }
         msg = `cameracalibrator.com | ${r}x${c} | Pitch: ${pitch} mm`;
     } else if ( type == "Circles Grid" ) {
-        radius = pitch / 3.0;
-
         mx = Math.max(0, (bw - pitch * (c-1) - 2*radius)/2.0);
         my = Math.max(0, (bh - pitch * (r-1) - 2*radius)/2.0);
 
@@ -126,10 +139,8 @@ function generatePattern(type, r, c, pitch, bw, bh) {
                 draw.circle(radius).center(cx, cy).attr({ fill: '#000' });
             }
         }
-        msg = `cameracalibrator.com | ${r}x${c} | Pitch: ${Number(pitch).toFixed(2)} mm | Radius: ${radius.toFixed(2)} mm`;
+        msg = `cameracalibrator.com | ${r}x${c} | Pitch: ${Number(pitch).toFixed(2)} mm | Radius: ${Number(radius).toFixed(2)} mm`;
     } else if ( type == "Asymmetric Circles Grid" ) {
-        radius = pitch / 3.0;
-
         mx = Math.max(0, (bw - pitch * (c-1) - 2*radius)/2.0);
         my = Math.max(0, (bh - pitch * (r-1) - 2*radius)/2.0);
 
@@ -140,7 +151,7 @@ function generatePattern(type, r, c, pitch, bw, bh) {
                 draw.circle(radius).center(cx, cy).attr({ fill: '#000' });
             }
         }
-        msg = `cameracalibrator.com | ${r}x${c} | Pitch: ${Number(pitch).toFixed(2)} mm | Radius: ${radius.toFixed(2)} mm`;
+        msg = `cameracalibrator.com | ${r}x${c} | Pitch: ${Number(pitch).toFixed(2)} mm | Radius: ${Number(radius).toFixed(2)} mm`;
     } else {
         console.log(`Cannot generate pattern with type: ${type}`);
     }
@@ -149,9 +160,3 @@ function generatePattern(type, r, c, pitch, bw, bh) {
     draw.text('50 mm').attr({ x: 6+50+2, y: bh-6, fill: '#888' }).size(3)
     return draw;
 }
-
-
-
-
-
-
