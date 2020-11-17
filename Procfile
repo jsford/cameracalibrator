@@ -1,0 +1,1 @@
+gunicorn camera-calibrator:app
