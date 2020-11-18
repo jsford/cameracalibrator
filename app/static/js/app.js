@@ -90,6 +90,11 @@ function savePattern() {
     let dr = tgtDotRadius.value;
 
     let svg = generatePattern(type, r, c, pitch, bw, bh, dr);
+
+    // Scale drawing from px to mm.
+    svg.attr({'width': mm(bw)});
+    svg.attr({'height': mm(bh)});
+
     let blob = new Blob([svg.svg()], {type: "text/plain",endings:"native"});
     window.saveAs(blob, "calibration_target.svg");
 }
@@ -102,8 +107,7 @@ function pct(x) {
 }
 
 function generatePattern(type, r, c, pitch, bw, bh, dr) {
-    calibrationPatternPreview.innerHTML = "";
-    let draw = SVG('calibrationPatternPreview').size(pct(100), pct(100));
+    let draw = SVG('hiddenCalibrationPattern').size(pct(100), pct(100));
     draw.viewbox(0, 0, bw, bh);
 
     // Fill background with white.
