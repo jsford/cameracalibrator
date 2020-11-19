@@ -5,51 +5,86 @@
       <h1>Mono Camera Calibrator</h1>
   </div>
 
-  <p id="status">OpenCV.js is loading...</p>
-  <hr class="border border-primary" />
+  <div class = "panel panel-rounded pl-3 pt-3 pr-3 pb-2 mt-4 bg-light">
+       <div class = "panel-heading">&nbsp;</div>
 
-  <div class="form-group mt-3">
-      <div class="form-group row">
-          <!-- Upload Images -->
-          <div class="form-group col">
-              <!-- Upload Images for Calibration -->
-              <label for="uploadImages">Upload Images</label>
-              <label class="btn btn-primary">
-                  Upload Images <input type="file" hidden multiple class="form-control-file" id="uploadImages" aria-describedby="fileHelp">
-              </label>
-          </div>
-          <!-- Pattern Type -->
-          <div class="form-group col">
-              <label for="calibrationPatternType">Pattern Type</label>
-              <select class="form-control" id="calibrationPatternType">
-                  <option>Checkerboard</option>
-                  <option>Circles Grid</option>
-                  <option>Asymetric Circles Grid</option>
-              </select>
-          </div>
-          <!-- Pattern Rows -->
-          <div class="form-group col">
-              <label for="calibrationPatternRows">Rows</label>
-              <input class="form-control" type="number" value="7" id="example-number-input">
-          </div>
-          <!-- Pattern Cols -->
-          <div class="form-group col">
-              <label for="calibrationPatternCols">Cols</label>
-              <input class="form-control" type="number" value="8" id="example-number-input">
-          </div>
-          <!-- Pattern Pitch -->
-          <div class="form-group col">
-              <label for="calibrationPatternPitch">Pattern Pitch [mm]</label>
-              <input class="form-control" type="number" value="40" id="example-number-input">
-          </div>
+       <div class = "panel-body">
+           <div class="form-group mx-3">
+               <div class="form-group row d-flex flex-wrap align-items-center">
+                   <div class="form-group col-md-4">
+                       <!-- Pattern Type -->
+                       <div class="form-group row-lg">
+                           <label for="calibrationTargetType">Pattern Type</label>
+                           <select class="form-control" id="calibrationTargetType">
+                               <option>Checkerboard</option>
+                               <option>Circles Grid</option>
+                               <option>Asymmetric Circles Grid</option>
+                           </select>
+                       </div>
+                       <!-- Pattern Rows -->
+                       <div class="form-group row-md">
+                           <label for="calibrationPatternRows">Rows</label>
+                           <input class="form-control integer-input clamp-2-100" type="number" value="7" id="calibrationTargetRows">
+                       </div>
+                       <!-- Pattern Columns -->
+                       <div class="form-group row-md">
+                           <label for="calibrationPatternCols">Columns</label>
+                           <input class="form-control integer-input clamp-2-100" type="number" value="9" id="calibrationTargetCols">
+                       </div>
+                       <!-- Pattern Pitch -->
+                       <div class="form-group row-md">
+                           <label for="calibrationPatternPitch">Pitch [mm]</label>
+                           <input class="form-control abs-val at-least-1" type="number" value="25" id="calibrationTargetPitch">
+                       </div>
+                       <!-- Upload Images -->
+                       <div class="form-group row-md">
+                           <label for="uploadImagesButton" id="uploadImagesLabel">Upload Images</label>
+                           <label class="btn btn-file btn-primary btn-block" id="uploadImagesButton">
+                               Upload Images<input type="file" style="display: none;" multiple>
+                           </label>
+                       </div>
 
-          <!-- Perform Calibration -->
-          <div class="form-group col">
-              <label for="calibrationPatternDownload">Calibrate Camera</label>
-              <button type="button" class="btn btn-primary">Calibrate Camera</button>
-          </div>
-      </div>
-  </div>
+                       <div class="form-group row-md">
+                           <label for="calFileType">Calibration File Format</label><br />
+                          <div class="btn-group btn-group-toggle" data-toggle="buttons" id="calFileType">
+                              <label class="btn btn-outline-secondary active" id="useOpenCvLabel">
+                                  <input type="radio" name="options" id="useOpenCv" autocomplete="off" checked="">OpenCV
+                              </label>
+                              <label class="btn btn-outline-secondary" id="useMatlabLabel">
+                                  <input type="radio" name="options" id="useMatlab" autocomplete="off">Matlab
+                              </label>
+                          </div>
+                        </div>
 
-  <hr class="border border-primary" />
+                       <!-- Calibrate -->
+                       <div class="form-group row-md">
+                           <label for="calibrateButton">Calibrate & Download</label>
+                           <button type="button" id="calibrateButton" class="btn btn-secondary btn-block">Calibrate Camera</button>
+                       </div>
+                   </div>
+
+                   <!-- Image View -->
+                   <div class="col-md-8 text-center">
+                       <img id="imageSource" class="d-none" />
+                       <canvas class="img-fluid d-none" id="imageCanvas" ></canvas>
+                       <svg id="imageCanvasDefault" class="img-fluid d-inline" width="20%" height="20%" preserveAspectRatio="none" viewBox="0 0 16 16" class="bi bi-images" fill="#A0A0A0" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M12.002 4h-10a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1zm-10-1a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-10zm4 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                          <path fill-rule="evenodd" d="M4 2h10a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1v1a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2h1a1 1 0 0 1 1-1z"/>
+                        </svg>
+                   </div>
+
+                   <!-- Hidden Calibration Pattern Storage -->
+                   <div hidden id="hiddenCalibrationPattern"></div>
+               </div>
+           </div>
+       </div>
+  </div> <!-- Configure Target Panel -->
+
+  <!-- FileSaver.js -->
+  <script src="static/js/libs/FileSaver.js" type="text/javascript"></script>
+  <!-- opencv.js -->
+  <script async src="static/js/libs/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+  <!-- mono_cal.js -->
+  <script src="static/js/mono_cal.js" type="text/javascript"></script>
+
 {% endblock %}
